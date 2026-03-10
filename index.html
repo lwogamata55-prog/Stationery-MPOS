@@ -113,15 +113,40 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
 .stat-val{font-size:1.55rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--primary);}
 .stat-sub{font-size:.66rem;color:var(--t3);}
 
-/* ===== PRODUCT CARD (Products tab) ===== */
-.prod-card{background:var(--card);border:1px solid var(--br);border-radius:var(--r2);padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+/* ===== PRODUCT CARD (view‑only) ===== */
+.prod-card-view{
+  background:var(--card);
+  border:1px solid var(--br);
+  border-radius:var(--r2);
+  padding:14px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 .prod-ico{width:40px;height:40px;border-radius:10px;background:var(--primary3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--primary);}
 .prod-info{flex:1;}
 .prod-name{font-weight:700;font-size:.95rem;}
 .prod-meta{font-size:.7rem;color:var(--t3);margin-top:2px;}
 .prod-price{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.9rem;color:var(--primary);}
 .prod-stock{font-size:.7rem;color:var(--t2);}
-.prod-actions{display:flex;gap:6px;}
+
+/* ===== PRODUCT CARD (admin with actions) ===== */
+.prod-card-admin{
+  background:var(--card);
+  border:1px solid var(--br);
+  border-radius:var(--r2);
+  padding:12px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.prod-actions{
+  display:flex;
+  gap:6px;
+  margin-left:auto;
+}
 
 /* ===== POS PRODUCT GRID ===== */
 .pos-grid{
@@ -260,7 +285,7 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
   </div>
 
   <div id="content">
-    <!-- PRODUCTS (Admin) -->
+    <!-- PRODUCTS (view‑only) -->
     <div id="t-products" class="tab on">
       <div id="share-banner">
         <div class="share-lbl">🔗 Permanent Link</div>
@@ -269,9 +294,9 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
           <button class="copy-btn" id="copy-b" onclick="doCopy()">Copy</button>
         </div>
       </div>
-      <div class="section-h">Manage Products</div>
+      <div class="section-h">Products</div>
       <div id="products-list"></div>
-      <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="openAddProductModal()">+ Add Product</button>
+      <!-- Removed Add Product button -->
     </div>
 
     <!-- POS (Point of Sale) -->
@@ -349,6 +374,14 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
           <div><div style="font-size:1.05rem;font-weight:800;">Admin Settings</div><div class="micro">Full control</div></div>
           <button class="btn btn-sm btn-red" onclick="lockAdmin()">🔒 Lock</button>
         </div>
+
+        <!-- Manage Products Section (now inside Admin) -->
+        <div class="card">
+          <div class="section-h">Manage Products</div>
+          <div id="admin-products-list"></div>
+          <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="openAddProductModal()">+ Add New Product</button>
+        </div>
+
         <div class="card">
           <div class="section-h">Change POS Password</div>
           <div class="fld"><label class="inp-label">Current POS Password</label><input class="inp" id="pos-pwd-old" type="password"></div>
@@ -358,6 +391,7 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
           </div>
           <button class="btn btn-sec" style="width:100%;" onclick="changePosPassword()">Update POS Password</button>
         </div>
+
         <div class="card">
           <div class="section-h">Change Admin Password</div>
           <div class="fld"><label class="inp-label">Current Admin Password</label><input class="inp" id="admin-pwd-old" type="password"></div>
@@ -367,6 +401,7 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
           </div>
           <button class="btn btn-sec" style="width:100%;" onclick="changeAdminPassword()">Update Admin Password</button>
         </div>
+
         <div class="card">
           <div class="section-h">Danger Zone</div>
           <button class="btn btn-red" style="width:100%;" onclick="resetAllData()">⚠️ Reset All Data</button>
@@ -518,14 +553,15 @@ dataRef.on('value', (snapshot) => {
 
 /* ===== RENDER ===== */
 function renderAll(){
-  renderProductsList();
+  renderProductsViewOnly();
   renderPosGrid();
   renderLedger();
   renderStats();
   renderCashTransactions();
   updateCashBalance();
+  if(adminUnlocked) renderAdminProducts(); // only if admin panel is open
 }
-function renderProductsList(){
+function renderProductsViewOnly(){
   const list = document.getElementById('products-list');
   if(!list) return;
   if(!S.products.length){
@@ -533,7 +569,7 @@ function renderProductsList(){
     return;
   }
   list.innerHTML = S.products.map(p => `
-    <div class="prod-card">
+    <div class="prod-card-view">
       <div class="prod-ico">📄</div>
       <div class="prod-info">
         <div class="prod-name">${escH(p.name)}</div>
@@ -542,6 +578,23 @@ function renderProductsList(){
       <div style="text-align:right;">
         <div class="prod-price">UGX ${fmtN(p.price)}</div>
         <div class="prod-stock">Stock: ${p.stock}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function renderAdminProducts(){
+  const list = document.getElementById('admin-products-list');
+  if(!list) return;
+  if(!S.products.length){
+    list.innerHTML = '<div class="muted" style="text-align:center;padding:20px;">No products yet</div>';
+    return;
+  }
+  list.innerHTML = S.products.map(p => `
+    <div class="prod-card-admin">
+      <div class="prod-ico">📄</div>
+      <div class="prod-info">
+        <div class="prod-name">${escH(p.name)}</div>
+        <div class="prod-meta">UGX ${fmtN(p.price)} · Stock: ${p.stock}</div>
       </div>
       <div class="prod-actions">
         <button class="btn-icon" style="width:32px;height:32px;" onclick="editProduct('${p.id}')">✏️</button>
@@ -708,8 +761,6 @@ function renderCashTransactions(){
 }
 function updateCashBalance(){
   // Calculate current balance based on all cash transactions (including sales as cash_in)
-  // We'll treat each sale as an automatic cash_in entry? For simplicity, we'll not double-count.
-  // Instead, we'll compute cash balance as: opening + cash_in - cash_out - expense + sales total.
   const opening = S.cashTransactions.filter(t => t.type === 'opening').reduce((sum,t) => sum + t.amount, 0);
   const cashIn = S.cashTransactions.filter(t => t.type === 'cash_in').reduce((sum,t) => sum + t.amount, 0);
   const cashOut = S.cashTransactions.filter(t => t.type === 'cash_out').reduce((sum,t) => sum + t.amount, 0);
@@ -800,6 +851,7 @@ function saveProduct(){
   pushToFirebase();
   closeOv('ov-product');
   renderAll();
+  if(adminUnlocked) renderAdminProducts();
   toast(id?'Product updated':'Product added','#FFC107');
 }
 function deleteProduct(id){
@@ -807,6 +859,7 @@ function deleteProduct(id){
   S.products = S.products.filter(p => p.id !== id);
   pushToFirebase();
   renderAll();
+  if(adminUnlocked) renderAdminProducts();
   toast('Product deleted','#dc3545');
 }
 
@@ -882,6 +935,7 @@ function recordSaleFromPos(){
   cart = [];
   pushToFirebase();
   renderAll();
+  if(adminUnlocked) renderAdminProducts();
   toast('Sale recorded','#FFC107');
 }
 
@@ -966,6 +1020,7 @@ function unlockAdmin(){
     document.getElementById('admin-pwd').value = '';
     document.getElementById('admin-lock').classList.add('hidden');
     document.getElementById('admin-panel').classList.remove('hidden');
+    renderAdminProducts();
     toast('Admin unlocked','#FFC107');
   } else {
     toast('Incorrect admin password','#dc3545');
@@ -1024,6 +1079,7 @@ function resetAllData(){
   cart = [];
   pushToFirebase();
   renderAll();
+  if(adminUnlocked) renderAdminProducts();
   toast('All data cleared','#dc3545');
 }
 
@@ -1078,7 +1134,7 @@ function goTab(name,btn){
   document.getElementById('t-'+name).classList.add('on');
   (btn||document.getElementById('ni-'+name)).classList.add('on');
   curTab = name;
-  if(name==='products') renderProductsList();
+  if(name==='products') renderProductsViewOnly();
   if(name==='pos') { renderPosGrid(); renderCart(); }
   if(name==='ledger') renderLedger();
   if(name==='stats') renderStats();
