@@ -40,7 +40,7 @@ input,select,textarea,button{font-family:'Outfit',sans-serif;}
   padding:24px;text-align:center;
   transition:opacity 0.9s, transform 0.9s;
 }
-#welcome.out{opacity:0;transform:scale(1.08) translateY(-20px);pointer-events:none;}
+#welcome.out{opacity:0;transform:scale(1.06) translateY(-16px);pointer-events:none;}
 .welcome-icon{font-size:5rem;margin-bottom:20px;animation:float 3s ease-in-out infinite;}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
 .welcome-title{font-size:clamp(2rem,8vw,4rem);font-weight:800;color:var(--primary);margin-bottom:8px;}
@@ -344,6 +344,21 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
 @keyframes toastIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 @keyframes toastOut{to{opacity:0;transform:translateY(10px);}}
 .tdot{width:8px;height:8px;border-radius:50%;}
+
+/* ===== RESPONSIVE TWEAKS FOR SMALL SCREENS ===== */
+@media (max-width: 400px){
+  .pos-grid{grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));}
+  .stat-big-value{font-size:1.4rem;}
+  .stat-big-card{padding:12px;}
+  .btn{font-size:.85rem; padding:12px 16px;}
+  .ni{font-size:.5rem;}
+  .ni .ico{font-size:1.2rem;}
+  .cash-card{flex-direction:column; align-items:flex-start;}
+  .cash-card > div:last-child{align-self:flex-end; margin-top:6px;}
+  .prod-card-view{padding:10px; gap:8px;}
+  .prod-name{font-size:.85rem;}
+  .prod-price{font-size:.8rem;}
+}
 </style>
 </head>
 <body>
