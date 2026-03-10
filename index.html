@@ -151,7 +151,7 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
 /* ===== POS PRODUCT GRID ===== */
 .pos-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
   gap:10px;
   margin-bottom:16px;
 }
@@ -161,13 +161,25 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
   border-radius:var(--r2);
   padding:12px;
   text-align:center;
-  cursor:pointer;
-  transition:transform .15s, border-color .15s;
+  position:relative;
 }
-.pos-item:active{transform:scale(.97);border-color:var(--primary);}
 .pos-item-name{font-weight:600;font-size:.9rem;margin-bottom:4px;}
 .pos-item-price{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--primary);font-size:.95rem;}
-.pos-item-stock{font-size:.7rem;color:var(--t3);margin-top:4px;}
+.pos-item-stock{font-size:.7rem;color:var(--t3);margin:4px 0;}
+.pos-quick-sell{
+  background:var(--primary);
+  color:#000;
+  border:none;
+  border-radius:20px;
+  padding:6px 12px;
+  font-size:.7rem;
+  font-weight:600;
+  width:100%;
+  margin-top:6px;
+  cursor:pointer;
+  transition:background .2s;
+}
+.pos-quick-sell:hover{background:var(--primary2);}
 
 /* ===== CART ===== */
 .cart-item{
@@ -199,25 +211,112 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
 .sale-total{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--primary);}
 .sale-items{font-size:.8rem;color:var(--t2);}
 
-/* ===== CASH TRANSACTION CARD ===== */
-.cash-card{background:var(--card);border:1px solid var(--br);border-radius:var(--r2);padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.cash-type{font-weight:700;font-size:.9rem;padding:2px 8px;border-radius:99px;display:inline-block;}
+/* ===== CASH TRANSACTION CARD (for Transactions tab) ===== */
+.cash-card{
+  background:var(--card);
+  border:1px solid var(--br);
+  border-radius:var(--r2);
+  padding:12px;
+  margin-bottom:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.cash-type{
+  font-weight:700;
+  font-size:.9rem;
+  padding:2px 8px;
+  border-radius:99px;
+  display:inline-block;
+}
 .type-opening{background:var(--primary3);color:var(--primary);}
 .type-cash_in{background:var(--gn2);color:var(--green);}
-.type-cash_out{background:var(--rd2);color:var(--red);}
 .type-expense{background:var(--amber2);color:var(--amber);}
 .cash-amount{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1rem;}
 .cash-desc{font-size:.7rem;color:var(--t2);}
 .cash-date{font-size:.7rem;color:var(--t3);}
+.cash-delete{
+  margin-left:8px;
+  background:var(--rd2);
+  border:none;
+  border-radius:6px;
+  padding:4px 8px;
+  color:var(--red);
+  font-weight:600;
+  cursor:pointer;
+}
+.cash-delete:hover{background:var(--red);color:#fff;}
 
-/* ===== STATS CARDS ===== */
-.stats-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
-.stat-box{background:var(--card);border:1px solid var(--br);border-radius:var(--r2);padding:12px;flex:1 1 120px;text-align:center;}
-.stat-box-label{font-size:.7rem;color:var(--t3);}
-.stat-box-value{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--primary);}
-.top-item{display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid var(--br);}
+/* ===== STATS CARDS (enhanced) ===== */
+.stats-dashboard{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+.stat-big-card{
+  background:linear-gradient(145deg,var(--card),rgba(255,255,255,.02));
+  border:1px solid var(--br);
+  border-radius:var(--r);
+  padding:16px;
+  text-align:center;
+}
+.stat-big-icon{
+  font-size:2rem;
+  margin-bottom:8px;
+  color:var(--primary);
+}
+.stat-big-label{
+  font-size:.7rem;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--t3);
+}
+.stat-big-value{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.8rem;
+  font-weight:700;
+  color:var(--primary);
+  line-height:1.2;
+}
+.stat-big-sub{
+  font-size:.7rem;
+  color:var(--t2);
+  margin-top:4px;
+}
+.top-item-list{
+  background:var(--card);
+  border:1px solid var(--br);
+  border-radius:var(--r2);
+  padding:12px;
+  margin-bottom:12px;
+}
+.top-item{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid var(--br);
+}
+.top-item:last-child{border-bottom:none;}
 .top-item-name{font-weight:600;}
-.top-item-qty{color:var(--t2);}
+.top-item-value{color:var(--primary);}
+.low-stock-warning{
+  background:rgba(255,77,109,.1);
+  border-left:4px solid var(--red);
+  padding:10px;
+  border-radius:var(--r2);
+  margin-bottom:8px;
+}
+.advice-note{
+  background:var(--primary3);
+  border-radius:var(--r2);
+  padding:12px;
+  margin-top:16px;
+  font-size:.85rem;
+  color:var(--t);
+  border:1px solid var(--br2);
+}
+.advice-note i{margin-right:6px;}
 
 /* ===== MODAL ===== */
 .ov{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.75);backdrop-filter:blur(12px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
@@ -296,7 +395,9 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
       </div>
       <div class="section-h">Products</div>
       <div id="products-list"></div>
-      <!-- Removed Add Product button -->
+      <div style="text-align:center; margin-top:8px;">
+        <button class="btn btn-sm btn-sec" id="toggle-products" onclick="toggleProductView()">View All</button>
+      </div>
     </div>
 
     <!-- POS (Point of Sale) -->
@@ -307,36 +408,85 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
       <div class="section-h" style="margin-top:16px;">Cart</div>
       <div id="cart-container"></div>
       <div class="cart-total" id="cart-total">Total: UGX 0</div>
-      <button class="btn btn-primary" style="width:100%;" onclick="recordSaleFromPos()">💾 Record Sale</button>
+      <button class="btn btn-primary" style="width:100%;" onclick="recordSaleFromPos()">💾 Record Sale (Multi‑item)</button>
     </div>
 
     <!-- LEDGER -->
     <div id="t-ledger" class="tab">
       <div class="section-h">Sales Ledger</div>
       <div id="ledger-list"></div>
+      <div style="text-align:center; margin-top:8px;">
+        <button class="btn btn-sm btn-sec" id="toggle-sales" onclick="toggleSalesView()">View All</button>
+      </div>
     </div>
 
-    <!-- STATISTICS -->
+    <!-- STATISTICS (enhanced) -->
     <div id="t-stats" class="tab">
-      <div class="section-h">Top Selling Items</div>
-      <div id="top-items-list"></div>
-      
-      <div class="section-h" style="margin-top:16px;">Low Stock Alert</div>
-      <div id="low-stock-list"></div>
-      
-      <div class="section-h" style="margin-top:16px;">Suggested Purchase</div>
-      <div id="suggested-purchase"></div>
+      <div class="section-h">Business Insights</div>
+      <div class="stats-dashboard">
+        <div class="stat-big-card">
+          <div class="stat-big-icon">💰</div>
+          <div class="stat-big-label">Total Sales</div>
+          <div class="stat-big-value" id="stat-total-sales">UGX 0</div>
+          <div class="stat-big-sub">All time</div>
+        </div>
+        <div class="stat-big-card">
+          <div class="stat-big-icon">📦</div>
+          <div class="stat-big-label">Items Sold</div>
+          <div class="stat-big-value" id="stat-items-sold">0</div>
+          <div class="stat-big-sub">Total quantity</div>
+        </div>
+        <div class="stat-big-card">
+          <div class="stat-big-icon">📊</div>
+          <div class="stat-big-label">Avg. Transaction</div>
+          <div class="stat-big-value" id="stat-avg-trans">UGX 0</div>
+          <div class="stat-big-sub">Per sale</div>
+        </div>
+        <div class="stat-big-card">
+          <div class="stat-big-icon">🏆</div>
+          <div class="stat-big-label">Top Seller</div>
+          <div class="stat-big-value" id="stat-top-seller">—</div>
+          <div class="stat-big-sub" id="stat-top-seller-qty"></div>
+        </div>
+      </div>
+
+      <div class="top-item-list">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span class="section-h" style="margin:0;">🏅 Best Sellers</span>
+          <span class="micro">Quantity</span>
+        </div>
+        <div id="top-sellers-list"></div>
+      </div>
+
+      <div class="top-item-list">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span class="section-h" style="margin:0;">⚠️ Low Stock Alerts</span>
+          <span class="micro">Stock</span>
+        </div>
+        <div id="low-stock-alerts"></div>
+      </div>
+
+      <div class="advice-note" id="advice-restock">
+        <i>📝</i> <span>Restock suggestions will appear here based on sales velocity.</span>
+      </div>
+
+      <div class="advice-note" style="background:var(--gn2); border-color:var(--green);">
+        <i>💡</i> <span id="daily-advice">Today's sales: UGX 0 · Keep up the good work!</span>
+      </div>
     </div>
 
-    <!-- CASH MANAGEMENT -->
+    <!-- CASH SUMMARY -->
     <div id="t-cash" class="tab">
-      <div class="section-h">Cash Flow</div>
+      <div class="section-h">Cash Summary</div>
       <div class="g3" style="margin-bottom:16px;">
-        <button class="btn btn-primary" onclick="openCashModal('opening')">💰 Opening</button>
-        <button class="btn btn-primary" onclick="openCashModal('cash_in')">📥 Cash In</button>
-        <button class="btn btn-primary" onclick="openCashModal('cash_out')">📤 Cash Out</button>
-        <button class="btn btn-primary" onclick="openCashModal('expense')">💸 Expense</button>
-        <button class="btn btn-primary" style="grid-column:span 3;" onclick="viewCashSummary()">📊 View Summary</button>
+        <button class="btn btn-primary" onclick="openExpenseModal()">💸 Record Expense</button>
+      </div>
+      
+      <div class="section-h">Cash Summary (Period)</div>
+      <div class="g3" style="margin-bottom:8px;">
+        <div class="stat-box"><span class="stat-box-label">Sales</span><span class="stat-box-value" id="period-sales">UGX 0</span></div>
+        <div class="stat-box"><span class="stat-box-label">Expenses</span><span class="stat-box-value" id="period-expenses">UGX 0</span></div>
+        <div class="stat-box"><span class="stat-box-label">Net</span><span class="stat-box-value" id="period-net">UGX 0</span></div>
       </div>
       
       <div class="section-h">Cash Balance</div>
@@ -352,11 +502,18 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
         <button class="btn btn-sec btn-sm" onclick="setCashPeriod('year')">Year</button>
         <button class="btn btn-sec btn-sm" onclick="setCashPeriod('all')">All</button>
       </div>
-      
-      <div id="cash-transactions-list"></div>
     </div>
 
-    <!-- ADMIN (separate password) -->
+    <!-- TRANSACTIONS (Cash Transactions List) -->
+    <div id="t-transactions" class="tab">
+      <div class="section-h">All Cash Transactions</div>
+      <div id="cash-transactions-list"></div>
+      <div style="text-align:center; margin-top:8px;">
+        <button class="btn btn-sm btn-sec" id="toggle-cash" onclick="toggleCashView()">View All</button>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
     <div id="t-admin" class="tab">
       <div id="admin-lock" class="lock-wrap" style="padding:40px 20px;text-align:center;">
         <div style="font-size:3rem;">🔐</div>
@@ -375,7 +532,7 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
           <button class="btn btn-sm btn-red" onclick="lockAdmin()">🔒 Lock</button>
         </div>
 
-        <!-- Manage Products Section (now inside Admin) -->
+        <!-- Manage Products Section -->
         <div class="card">
           <div class="section-h">Manage Products</div>
           <div id="admin-products-list"></div>
@@ -416,6 +573,7 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
     <button class="ni" onclick="goTab('ledger',this)"><span class="ico">📋</span><span>Ledger</span></button>
     <button class="ni" onclick="goTab('stats',this)"><span class="ico">📊</span><span>Stats</span></button>
     <button class="ni" onclick="goTab('cash',this)"><span class="ico">💰</span><span>Cash</span></button>
+    <button class="ni" onclick="goTab('transactions',this)"><span class="ico">📃</span><span>Txns</span></button>
     <button class="ni" onclick="goTab('admin',this)"><span class="ico">⚙️</span><span>Admin</span></button>
   </div>
 </div>
@@ -461,18 +619,16 @@ button{cursor:pointer;border:none;outline:none;transition:all .18s;}
   </div>
 </div>
 
-<!-- CASH TRANSACTION MODAL -->
-<div class="ov" id="ov-cash" onclick="maybeClose(event,'ov-cash')">
+<!-- EXPENSE MODAL -->
+<div class="ov" id="ov-expense" onclick="maybeClose(event,'ov-expense')">
   <div class="bs">
-    <div class="bs-title" id="cash-modal-title">Add Cash Transaction</div>
-    <input type="hidden" id="cash-type">
-    <div class="fld"><label class="inp-label">Date</label><input class="inp" id="cash-date" type="date"></div>
-    <div class="fld"><label class="inp-label">Amount (UGX)</label><input class="inp" id="cash-amount" type="number" placeholder="0"></div>
-    <div class="fld"><label class="inp-label">Description</label><input class="inp" id="cash-desc" placeholder="e.g. Rent, Electricity"></div>
-    <div class="fld" id="cash-category-field" style="display:none;"><label class="inp-label">Category</label><input class="inp" id="cash-cat" placeholder="Category"></div>
+    <div class="bs-title">💸 Record Expense</div>
+    <div class="fld"><label class="inp-label">Date</label><input class="inp" id="expense-date" type="date"></div>
+    <div class="fld"><label class="inp-label">Amount (UGX)</label><input class="inp" id="expense-amount" type="number" placeholder="0"></div>
+    <div class="fld"><label class="inp-label">Description</label><input class="inp" id="expense-desc" placeholder="e.g. Rent, Electricity"></div>
     <div style="display:flex;gap:10px;">
-      <button class="btn btn-sec" style="flex:1;" onclick="closeOv('ov-cash')">Cancel</button>
-      <button class="btn btn-primary" style="flex:1;" onclick="saveCashTransaction()">Save</button>
+      <button class="btn btn-sec" style="flex:1;" onclick="closeOv('ov-expense')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="saveExpense()">Save</button>
     </div>
   </div>
 </div>
@@ -491,13 +647,13 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const dataRef = db.ref('mpos_v2'); // new path to avoid conflict with old data
+const dataRef = db.ref('mpos_v2');
 
 /* ===== STATE ===== */
 let S = {
   products: [],                // { id, name, price, stock, category, description }
   sales: [],                   // { id, date, items: [{ productId, name, quantity, price }], total }
-  cashTransactions: [],        // { id, date, type, amount, description, category (for expense) }
+  cashTransactions: [],        // { id, date, type, amount, description }   type: 'opening', 'cash_in', 'expense'
   posPasswordHash: btoa('1234'),
   adminPasswordHash: btoa('admin123'),
   lastUpdated: null
@@ -508,6 +664,11 @@ let adminUnlocked = false;
 let curTab = 'products';
 let cart = [];                 // { productId, name, quantity, price, maxStock }
 let cashPeriod = 'day';        // 'day', 'week', 'month', 'year', 'all'
+
+// View toggles
+let showAllProducts = false;
+let showAllSales = false;
+let showAllCash = false;
 
 const LKEY = 'mpos_v2';
 
@@ -557,10 +718,21 @@ function renderAll(){
   renderPosGrid();
   renderLedger();
   renderStats();
+  renderCashSummary();
   renderCashTransactions();
-  updateCashBalance();
-  if(adminUnlocked) renderAdminProducts(); // only if admin panel is open
+  if(adminUnlocked) renderAdminProducts();
 }
+
+function scrollToLast(containerId) {
+  setTimeout(() => {
+    const container = document.getElementById(containerId);
+    if(container && container.lastElementChild) {
+      container.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, 100);
+}
+
+/* Products view‑only */
 function renderProductsViewOnly(){
   const list = document.getElementById('products-list');
   if(!list) return;
@@ -568,7 +740,8 @@ function renderProductsViewOnly(){
     list.innerHTML = '<div class="muted" style="text-align:center;padding:40px;">No products yet</div>';
     return;
   }
-  list.innerHTML = S.products.map(p => `
+  let productsToShow = showAllProducts ? S.products : S.products.slice(0,20);
+  list.innerHTML = productsToShow.map(p => `
     <div class="prod-card-view">
       <div class="prod-ico">📄</div>
       <div class="prod-info">
@@ -581,7 +754,14 @@ function renderProductsViewOnly(){
       </div>
     </div>
   `).join('');
+  document.getElementById('toggle-products').innerText = showAllProducts ? 'Show Less' : 'View All';
 }
+function toggleProductView(){
+  showAllProducts = !showAllProducts;
+  renderProductsViewOnly();
+}
+
+/* Admin products */
 function renderAdminProducts(){
   const list = document.getElementById('admin-products-list');
   if(!list) return;
@@ -603,6 +783,8 @@ function renderAdminProducts(){
     </div>
   `).join('');
 }
+
+/* POS grid with Quick Sell button */
 function renderPosGrid(){
   const grid = document.getElementById('pos-grid');
   if(!grid) return;
@@ -611,13 +793,16 @@ function renderPosGrid(){
     return;
   }
   grid.innerHTML = S.products.map(p => `
-    <div class="pos-item" onclick="addToCart('${p.id}')">
+    <div class="pos-item">
       <div class="pos-item-name">${escH(p.name)}</div>
       <div class="pos-item-price">UGX ${fmtN(p.price)}</div>
       <div class="pos-item-stock">Stock: ${p.stock}</div>
+      <button class="pos-quick-sell" onclick="quickSell('${p.id}')">Sell 1</button>
     </div>
   `).join('');
 }
+
+/* Cart */
 function renderCart(){
   const container = document.getElementById('cart-container');
   if(!container) return;
@@ -642,6 +827,8 @@ function renderCart(){
   }).join('');
   document.getElementById('cart-total').innerText = `Total: UGX ${fmtN(total)}`;
 }
+
+/* Ledger */
 function renderLedger(){
   const list = document.getElementById('ledger-list');
   if(!list) return;
@@ -649,7 +836,8 @@ function renderLedger(){
     list.innerHTML = '<div class="muted" style="text-align:center;padding:40px;">No sales recorded</div>';
     return;
   }
-  list.innerHTML = S.sales.map(s => `
+  let salesToShow = showAllSales ? S.sales : S.sales.slice(0,20);
+  list.innerHTML = salesToShow.map(s => `
     <div class="sale-card">
       <div class="sale-header">
         <span class="sale-date">${s.date}</span>
@@ -658,9 +846,28 @@ function renderLedger(){
       <div class="sale-items">${s.items.map(i => `${i.quantity} × ${escH(i.name)}`).join(', ')}</div>
     </div>
   `).join('');
+  document.getElementById('toggle-sales').innerText = showAllSales ? 'Show Less' : 'View All';
 }
+function toggleSalesView(){
+  showAllSales = !showAllSales;
+  renderLedger();
+}
+
+/* ===== STATS (enhanced) ===== */
 function renderStats(){
-  // Top selling items (all time)
+  // Total sales
+  const totalSales = S.sales.reduce((sum, s) => sum + s.total, 0);
+  document.getElementById('stat-total-sales').innerText = `UGX ${fmtN(totalSales)}`;
+
+  // Total items sold
+  const totalItems = S.sales.reduce((sum, s) => sum + s.items.reduce((q, i) => q + i.quantity, 0), 0);
+  document.getElementById('stat-items-sold').innerText = fmtN(totalItems);
+
+  // Average transaction
+  const avgTrans = S.sales.length ? totalSales / S.sales.length : 0;
+  document.getElementById('stat-avg-trans').innerText = `UGX ${fmtN(avgTrans)}`;
+
+  // Top seller
   const itemCounts = {};
   S.sales.forEach(sale => {
     sale.items.forEach(item => {
@@ -668,38 +875,50 @@ function renderStats(){
       itemCounts[item.productId].qty += item.quantity;
     });
   });
-  const topItems = Object.values(itemCounts).sort((a,b) => b.qty - a.qty).slice(0,5);
-  const topDiv = document.getElementById('top-items-list');
-  if(topDiv){
+  const topItems = Object.values(itemCounts).sort((a,b) => b.qty - a.qty);
+  const topSeller = topItems[0];
+  if(topSeller){
+    document.getElementById('stat-top-seller').innerText = topSeller.name.length > 12 ? topSeller.name.slice(0,10)+'…' : topSeller.name;
+    document.getElementById('stat-top-seller-qty').innerText = `${topSeller.qty} sold`;
+  } else {
+    document.getElementById('stat-top-seller').innerText = '—';
+    document.getElementById('stat-top-seller-qty').innerText = '';
+  }
+
+  // Top sellers list (top 5)
+  const topSellersDiv = document.getElementById('top-sellers-list');
+  if(topSellersDiv){
     if(topItems.length){
-      topDiv.innerHTML = topItems.map(t => `
+      topSellersDiv.innerHTML = topItems.slice(0,5).map(t => `
         <div class="top-item">
           <span class="top-item-name">${escH(t.name)}</span>
-          <span class="top-item-qty">${t.qty} sold</span>
+          <span class="top-item-value">${t.qty}</span>
         </div>
       `).join('');
     } else {
-      topDiv.innerHTML = '<div class="muted">No sales data</div>';
+      topSellersDiv.innerHTML = '<div class="muted">No sales yet</div>';
     }
   }
-  
-  // Low stock alert (stock <= 3)
+
+  // Low stock alerts
   const lowStock = S.products.filter(p => p.stock <= 3);
-  const lowDiv = document.getElementById('low-stock-list');
-  if(lowDiv){
+  const lowStockDiv = document.getElementById('low-stock-alerts');
+  if(lowStockDiv){
     if(lowStock.length){
-      lowDiv.innerHTML = lowStock.map(p => `
-        <div class="top-item">
-          <span class="top-item-name">${escH(p.name)}</span>
-          <span class="top-item-qty">Stock: ${p.stock}</span>
+      lowStockDiv.innerHTML = lowStock.map(p => `
+        <div class="low-stock-warning">
+          <div style="display:flex; justify-content:space-between;">
+            <span>${escH(p.name)}</span>
+            <span style="color:var(--red);">${p.stock} left</span>
+          </div>
         </div>
       `).join('');
     } else {
-      lowDiv.innerHTML = '<div class="muted">All stock levels are healthy</div>';
+      lowStockDiv.innerHTML = '<div class="muted">All stock levels are healthy</div>';
     }
   }
-  
-  // Suggested purchase based on average daily sales (last 30 days)
+
+  // Restock advice
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const recentSales = S.sales.filter(s => new Date(s.date) >= thirtyDaysAgo);
@@ -715,61 +934,43 @@ function renderStats(){
     const sold = recentCounts[p.id] ? recentCounts[p.id].qty : 0;
     const avgDaily = sold / 30;
     const daysLeft = p.stock / (avgDaily || 1);
-    if(daysLeft < 14){ // suggest if less than 2 weeks of stock
-      suggestions.push({ name: p.name, stock: p.stock, avgDaily: avgDaily.toFixed(1), daysLeft: daysLeft.toFixed(0) });
+    if(daysLeft < 14 && avgDaily > 0){
+      suggestions.push({ name: p.name, daysLeft: Math.round(daysLeft) });
     }
   });
-  const suggestDiv = document.getElementById('suggested-purchase');
-  if(suggestDiv){
+  const adviceRestock = document.getElementById('advice-restock');
+  if(adviceRestock){
     if(suggestions.length){
-      suggestDiv.innerHTML = suggestions.map(s => `
-        <div class="top-item">
-          <span class="top-item-name">${escH(s.name)}</span>
-          <span class="top-item-qty">Stock: ${s.stock} | Days left: ${s.daysLeft}</span>
-        </div>
-      `).join('');
+      adviceRestock.innerHTML = `<i>📝</i> Consider restocking: ${suggestions.map(s => `${s.name} (${s.daysLeft} days left)`).join(', ')}.`;
     } else {
-      suggestDiv.innerHTML = '<div class="muted">No urgent restock needed</div>';
+      adviceRestock.innerHTML = `<i>📝</i> Stock levels look good. No urgent restock needed.`;
     }
   }
+
+  // Daily advice
+  const todayStr = new Date().toLocaleDateString('en-UG');
+  const todaySales = S.sales.filter(s => s.date === todayStr).reduce((sum, s) => sum + s.total, 0);
+  document.getElementById('daily-advice').innerText = `Today's sales: UGX ${fmtN(todaySales)} · Keep up the good work!`;
 }
-function renderCashTransactions(){
-  const list = document.getElementById('cash-transactions-list');
-  if(!list) return;
-  let filtered = filterCashByPeriod();
-  if(!filtered.length){
-    list.innerHTML = '<div class="muted" style="text-align:center;padding:20px;">No transactions in this period</div>';
-    return;
-  }
-  list.innerHTML = filtered.map(t => {
-    let typeClass = '';
-    if(t.type === 'opening') typeClass = 'type-opening';
-    else if(t.type === 'cash_in') typeClass = 'type-cash_in';
-    else if(t.type === 'cash_out') typeClass = 'type-cash_out';
-    else if(t.type === 'expense') typeClass = 'type-expense';
-    let sign = (t.type === 'cash_in' || t.type === 'opening') ? '+' : '-';
-    return `
-      <div class="cash-card">
-        <div>
-          <span class="cash-type ${typeClass}">${t.type}</span>
-          <div class="cash-desc">${escH(t.description || '')} <span class="cash-date">${t.date}</span></div>
-        </div>
-        <div class="cash-amount" style="color:${(t.type==='cash_in'||t.type==='opening')?'var(--green)':'var(--red)'}">${sign} UGX ${fmtN(t.amount)}</div>
-      </div>
-    `;
-  }).join('');
-}
-function updateCashBalance(){
-  // Calculate current balance based on all cash transactions (including sales as cash_in)
-  const opening = S.cashTransactions.filter(t => t.type === 'opening').reduce((sum,t) => sum + t.amount, 0);
-  const cashIn = S.cashTransactions.filter(t => t.type === 'cash_in').reduce((sum,t) => sum + t.amount, 0);
-  const cashOut = S.cashTransactions.filter(t => t.type === 'cash_out').reduce((sum,t) => sum + t.amount, 0);
-  const expenses = S.cashTransactions.filter(t => t.type === 'expense').reduce((sum,t) => sum + t.amount, 0);
-  const salesTotal = S.sales.reduce((sum,s) => sum + s.total, 0);
-  const balance = opening + cashIn - cashOut - expenses + salesTotal;
+
+/* ===== CASH SUMMARY ===== */
+function renderCashSummary(){
+  const periodCash = getCashTransactionsForPeriod(cashPeriod);
+  const periodSales = periodCash.filter(t => t.type === 'cash_in').reduce((sum, t) => sum + t.amount, 0);
+  const periodExpenses = periodCash.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+  document.getElementById('period-sales').innerText = `UGX ${fmtN(periodSales)}`;
+  document.getElementById('period-expenses').innerText = `UGX ${fmtN(periodExpenses)}`;
+  document.getElementById('period-net').innerText = `UGX ${fmtN(periodSales - periodExpenses)}`;
+
+  let balance = 0;
+  S.cashTransactions.forEach(t => {
+    if (t.type === 'opening' || t.type === 'cash_in') balance += t.amount;
+    else if (t.type === 'expense') balance -= t.amount;
+  });
   document.getElementById('cash-balance').innerText = `UGX ${fmtN(balance)}`;
 }
-function filterCashByPeriod(){
+
+function getCashTransactionsForPeriod(period){
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const startOfWeek = new Date(today);
@@ -778,19 +979,73 @@ function filterCashByPeriod(){
   const startOfYear = new Date(now.getFullYear(), 0, 1);
   
   return S.cashTransactions.filter(t => {
-    const d = new Date(t.date);
-    if(cashPeriod === 'day') return d >= today;
-    if(cashPeriod === 'week') return d >= startOfWeek;
-    if(cashPeriod === 'month') return d >= startOfMonth;
-    if(cashPeriod === 'year') return d >= startOfYear;
+    const d = new Date(t.date + 'T00:00:00');
+    if(period === 'day') return d >= today;
+    if(period === 'week') return d >= startOfWeek;
+    if(period === 'month') return d >= startOfMonth;
+    if(period === 'year') return d >= startOfYear;
     return true; // all
   }).sort((a,b) => new Date(b.date) - new Date(a.date));
 }
+
 function setCashPeriod(period){
   cashPeriod = period;
   let label = { day:'Today', week:'This Week', month:'This Month', year:'This Year', all:'All Time' }[period];
   document.getElementById('cash-period').innerText = label;
+  renderCashSummary();
+}
+
+/* ===== TRANSACTIONS LIST ===== */
+function renderCashTransactions(){
+  const list = document.getElementById('cash-transactions-list');
+  if(!list) return;
+  let allCash = [...S.cashTransactions].sort((a,b) => new Date(b.date) - new Date(a.date));
+  if(!allCash.length){
+    list.innerHTML = '<div class="muted" style="text-align:center;padding:20px;">No transactions</div>';
+    return;
+  }
+  let cashToShow = showAllCash ? allCash : allCash.slice(0,20);
+  list.innerHTML = cashToShow.map(t => {
+    let typeClass = '';
+    if(t.type === 'opening') typeClass = 'type-opening';
+    else if(t.type === 'cash_in') typeClass = 'type-cash_in';
+    else if(t.type === 'expense') typeClass = 'type-expense';
+    let sign = (t.type === 'cash_in' || t.type === 'opening') ? '+' : '-';
+    let deleteBtn = '';
+    if (adminUnlocked) {
+      deleteBtn = `<button class="cash-delete" onclick="deleteCashTransaction('${t.id}')">🗑</button>`;
+    }
+    return `
+      <div class="cash-card">
+        <div>
+          <span class="cash-type ${typeClass}">${t.type}</span>
+          <div class="cash-desc">${escH(t.description || '')} <span class="cash-date">${t.date}</span></div>
+        </div>
+        <div style="display:flex; align-items:center;">
+          <span class="cash-amount" style="color:${(t.type==='cash_in'||t.type==='opening')?'var(--green)':'var(--red)'}">${sign} UGX ${fmtN(t.amount)}</span>
+          ${deleteBtn}
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('toggle-cash').innerText = showAllCash ? 'Show Less' : 'View All';
+}
+function toggleCashView(){
+  showAllCash = !showAllCash;
   renderCashTransactions();
+}
+
+function deleteCashTransaction(id){
+  if(!adminUnlocked){
+    toast('Only admin can delete','#dc3545');
+    return;
+  }
+  if(!confirm('Delete this transaction? This will affect cash balance.')) return;
+  S.cashTransactions = S.cashTransactions.filter(t => t.id != id);
+  pushToFirebase();
+  renderCashTransactions();
+  renderCashSummary();
+  toast('Transaction deleted','#FFC107');
 }
 
 /* ===== PRODUCT CRUD ===== */
@@ -827,7 +1082,6 @@ function saveProduct(){
     toast('Fill all fields correctly','#dc3545'); return;
   }
   if(id){
-    // edit
     const prod = S.products.find(p => p.id === id);
     if(prod){
       prod.name = name;
@@ -837,7 +1091,6 @@ function saveProduct(){
       prod.description = desc;
     }
   } else {
-    // add
     const newProd = {
       id: Date.now().toString(),
       name,
@@ -852,9 +1105,14 @@ function saveProduct(){
   closeOv('ov-product');
   renderAll();
   if(adminUnlocked) renderAdminProducts();
+  scrollToLast('admin-products-list');
   toast(id?'Product updated':'Product added','#FFC107');
 }
 function deleteProduct(id){
+  if(!adminUnlocked){
+    toast('Only admin can delete','#dc3545');
+    return;
+  }
   if(!confirm('Delete this product? It will also affect past sales records.')) return;
   S.products = S.products.filter(p => p.id !== id);
   pushToFirebase();
@@ -916,10 +1174,12 @@ function recordSaleFromPos(){
       return;
     }
   }
+  // Reduce stock
   for(let item of cart){
     const prod = S.products.find(p => p.id === item.productId);
     prod.stock -= item.quantity;
   }
+  // Create sale record
   const sale = {
     id: Date.now(),
     date: new Date().toLocaleDateString('en-UG'),
@@ -932,52 +1192,95 @@ function recordSaleFromPos(){
     total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   };
   S.sales.unshift(sale);
+
+  // Automatically create a cash_in transaction for this sale
+  const cashTransaction = {
+    id: Date.now() + 1,
+    date: sale.date,
+    type: 'cash_in',
+    amount: sale.total,
+    description: `Sale: ${sale.items.map(i => i.quantity+' × '+i.name).join(', ')}`
+  };
+  S.cashTransactions.push(cashTransaction);
+
   cart = [];
   pushToFirebase();
   renderAll();
   if(adminUnlocked) renderAdminProducts();
+  scrollToLast('ledger-list');
+  scrollToLast('cash-transactions-list');
   toast('Sale recorded','#FFC107');
 }
 
-/* ===== CASH MANAGEMENT ===== */
-function openCashModal(type){
-  document.getElementById('cash-modal-title').innerText = 
-    type==='opening'?'💰 Opening Balance':
-    type==='cash_in'?'📥 Cash In':
-    type==='cash_out'?'📤 Cash Out':'💸 Expense';
-  document.getElementById('cash-type').value = type;
-  document.getElementById('cash-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('cash-amount').value = '';
-  document.getElementById('cash-desc').value = '';
-  document.getElementById('cash-category-field').style.display = (type==='expense')?'block':'none';
-  openOv('ov-cash');
+/* New Quick Sell function */
+function quickSell(productId){
+  const prod = S.products.find(p => p.id === productId);
+  if(!prod) return;
+  if(prod.stock < 1){
+    toast('Out of stock','#dc3545'); return;
+  }
+  // Reduce stock
+  prod.stock -= 1;
+  // Create sale record
+  const sale = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('en-UG'),
+    items: [{
+      productId: prod.id,
+      name: prod.name,
+      quantity: 1,
+      price: prod.price
+    }],
+    total: prod.price
+  };
+  S.sales.unshift(sale);
+
+  // Create cash_in transaction
+  const cashTransaction = {
+    id: Date.now() + 1,
+    date: sale.date,
+    type: 'cash_in',
+    amount: sale.total,
+    description: `Sale: 1 × ${prod.name}`
+  };
+  S.cashTransactions.push(cashTransaction);
+
+  pushToFirebase();
+  renderAll();
+  if(adminUnlocked) renderAdminProducts();
+  scrollToLast('ledger-list');
+  scrollToLast('cash-transactions-list');
+  toast(`Sold 1 ${prod.name}`,'#FFC107');
 }
-function saveCashTransaction(){
-  const type = document.getElementById('cash-type').value;
-  const date = document.getElementById('cash-date').value;
-  const amount = parseFloat(document.getElementById('cash-amount').value);
-  const desc = document.getElementById('cash-desc').value.trim();
+
+/* ===== EXPENSE ===== */
+function openExpenseModal(){
+  document.getElementById('expense-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('expense-amount').value = '';
+  document.getElementById('expense-desc').value = '';
+  openOv('ov-expense');
+}
+function saveExpense(){
+  const date = document.getElementById('expense-date').value;
+  const amount = parseFloat(document.getElementById('expense-amount').value);
+  const desc = document.getElementById('expense-desc').value.trim();
   if(!date || isNaN(amount) || amount<=0){
     toast('Enter valid date and amount','#dc3545'); return;
   }
-  const cat = (type==='expense') ? document.getElementById('cash-cat').value : '';
   const transaction = {
     id: Date.now(),
     date,
-    type,
+    type: 'expense',
     amount,
-    description: desc,
-    category: cat
+    description: desc || 'Expense'
   };
   S.cashTransactions.push(transaction);
   pushToFirebase();
-  closeOv('ov-cash');
+  closeOv('ov-expense');
   renderCashTransactions();
-  updateCashBalance();
-  toast('Transaction recorded','#FFC107');
-}
-function viewCashSummary(){
-  // Already visible in the tab
+  renderCashSummary();
+  scrollToLast('cash-transactions-list');
+  toast('Expense recorded','#FFC107');
 }
 
 /* ===== PASSWORD & ACCESS ===== */
@@ -1021,6 +1324,7 @@ function unlockAdmin(){
     document.getElementById('admin-lock').classList.add('hidden');
     document.getElementById('admin-panel').classList.remove('hidden');
     renderAdminProducts();
+    renderCashTransactions(); // to show delete buttons
     toast('Admin unlocked','#FFC107');
   } else {
     toast('Incorrect admin password','#dc3545');
@@ -1030,6 +1334,7 @@ function lockAdmin(){
   adminUnlocked = false;
   document.getElementById('admin-lock').classList.remove('hidden');
   document.getElementById('admin-panel').classList.add('hidden');
+  renderCashTransactions(); // to hide delete buttons
 }
 function changePosPassword(){
   const old = document.getElementById('pos-pwd-old').value;
@@ -1072,6 +1377,10 @@ function changeAdminPassword(){
   toast('Admin password changed','#FFC107');
 }
 function resetAllData(){
+  if(!adminUnlocked){
+    toast('Only admin can reset','#dc3545');
+    return;
+  }
   if(!confirm('⚠️ Delete ALL products, sales, and cash transactions? This cannot be undone.')) return;
   S.products = [];
   S.sales = [];
@@ -1138,14 +1447,15 @@ function goTab(name,btn){
   if(name==='pos') { renderPosGrid(); renderCart(); }
   if(name==='ledger') renderLedger();
   if(name==='stats') renderStats();
-  if(name==='cash') { renderCashTransactions(); updateCashBalance(); }
+  if(name==='cash') renderCashSummary();
+  if(name==='transactions') renderCashTransactions();
+  if(name==='admin') { if(adminUnlocked) renderAdminProducts(); }
 }
 
 /* ===== INIT ===== */
 function init(){
   loadLocal();
   refreshShareUrl();
-  // Firebase listener already attached
 }
 init();
 </script>
