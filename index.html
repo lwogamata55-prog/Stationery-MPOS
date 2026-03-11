@@ -1,4 +1,3 @@
-```html by Lwogamata
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -704,13 +703,7 @@ font-size:1.2rem;color:#000;flex-shrink:0;
           <button class="btn btn-sec" style="width:100%;" onclick="changeAdminPassword()">Update Admin Password</button>
         </div>
 
-        <!-- DANGER ZONE -->
-        <div class="card">
-          <div class="section-h">Danger Zone</div>
-          <p style="font-size:.8rem;color:var(--t2);margin-bottom:12px;">Permanently deletes all products, sales, and transactions. Cannot be undone.</p>
-          <button class="btn btn-red" style="width:100%;" onclick="resetAllData()">⚠️ Reset All Data</button>
-        </div>
-
+        <!-- DANGER ZONE REMOVED -->
         <div class="scroll-end"></div>
       </div>
     </div>
@@ -1097,7 +1090,7 @@ function renderAdminProducts(){
     </div>`).join('');
 }
 
-/* --- POS Grid with search --- */
+/* --- POS Grid with search AND sorted by most sold --- */
 function renderPosGrid(){
   const grid = document.getElementById('pos-grid');
   if (!grid) return;
@@ -1108,6 +1101,19 @@ function renderPosGrid(){
     (p.category||'').toLowerCase().includes(q) ||
     (p.description||'').toLowerCase().includes(q)
   );
+
+  // compute sales quantity for each product
+  const salesCount = {};
+  S.sales.forEach(sale => {
+    sale.items.forEach(item => {
+      if (!salesCount[item.productId]) salesCount[item.productId] = 0;
+      salesCount[item.productId] += item.quantity;
+    });
+  });
+
+  // sort products by sales count descending (most sold first)
+  prods.sort((a, b) => (salesCount[b.id] || 0) - (salesCount[a.id] || 0));
+
   const countWrap = document.getElementById('search-count');
   const countVal = document.getElementById('search-count-val');
   if (q) { if (countWrap) countWrap.style.display = 'flex'; if (countVal) countVal.innerText = prods.length; }
@@ -1546,13 +1552,7 @@ function changeAdminPassword(){
   ['admin-pwd-old','admin-pwd-new','admin-pwd-cfm'].forEach(id => document.getElementById(id).value = '');
   toast('Admin password changed ✓','#FFD000');
 }
-function resetAllData(){
-  if (!adminUnlocked) { toast('Admin only','#ff4444'); return; }
-  if (!confirm('⚠️ Delete ALL data permanently?')) return;
-  S.products = []; S.sales = []; S.cashTransactions = []; cart = [];
-  pushToFirebase(); renderAll(); if (adminUnlocked) renderAdminProducts();
-  toast('All data cleared','#ff4444');
-}
+// REMOVED resetAllData function entirely
 
 /* ===== SHARE ===== */
 let shareOpen = false;
@@ -1596,6 +1596,87 @@ function scrollTabToBottom(tabId) {
   const last = candidates.length ? candidates[candidates.length - 1] : tab.lastElementChild;
   if (last) ensureVisibleInContainer(last, tab, { bottomMargin: 90 });
 }
+
+/* ===== LOW STOCK ALERT WITH SOUND ===== */
+let alertInterval = null;
+let audioContext = null;
+
+// Initialize audio context on first user interaction to comply with browser autoplay policies
+function getAudioContext() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioContext;
+}
+
+function playBeep() {
+  try {
+    const ctx = getAudioContext();
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(() => playBeep);
+      return;
+    }
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 800;
+    gain.gain.value = 0.1;
+    osc.connect(gain).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+  } catch (e) {}
+}
+
+function checkLowStockAndAlert() {
+  if (!appOpen) return;
+  const lowItems = S.products.filter(p => p.stock <= 3);
+  if (lowItems.length === 0) return;
+
+  // Play a short beep
+  playBeep();
+
+  // Show a toast with the list of low‑stock items
+  let msg;
+  if (lowItems.length === 1) {
+    msg = `⚠️ Low stock: ${lowItems[0].name} (only ${lowItems[0].stock} left)`;
+  } else {
+    const names = lowItems.slice(0, 3).map(i => `${i.name} (${i.stock})`).join(', ');
+    msg = `⚠️ Low stock: ${names}${lowItems.length > 3 ? ` and ${lowItems.length - 3} more` : ''}`;
+  }
+  toast(msg, '#ff4444');
+}
+
+// Start the alert interval when app becomes staff/admin (i.e., after login)
+function startLowStockAlerts() {
+  if (alertInterval) clearInterval(alertInterval);
+  alertInterval = setInterval(checkLowStockAndAlert, 30000); // every 30 seconds
+}
+
+function stopLowStockAlerts() {
+  if (alertInterval) {
+    clearInterval(alertInterval);
+    alertInterval = null;
+  }
+}
+
+// Override access‑level changes to start/stop alerts
+const originalEnterAsStaff = enterAsStaff;
+enterAsStaff = function() {
+  originalEnterAsStaff();
+  startLowStockAlerts();
+};
+
+const originalUnlockAdmin = unlockAdmin;
+unlockAdmin = function() {
+  originalUnlockAdmin();
+  startLowStockAlerts();
+};
+
+const originalExitToWelcome = exitToWelcome;
+exitToWelcome = function() {
+  stopLowStockAlerts();
+  originalExitToWelcome();
+};
 
 /* ===== NAV / TAB SWITCH ===== */
 function goTab(name, btn){
@@ -1739,5 +1820,3 @@ window.markLastAdded = function(el){
 
 </body>
 </html>
-```
-
